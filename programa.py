@@ -7,11 +7,27 @@
 ## correo electrónico,teléfono, y que le des a guardar, y que se guarde en un txt)"
 import tkinter as tk
 from tkinter import ttk
+import json
 
 def crear():
-    archivo = open("miarchivo.xml",'w')
+    nombre = campo1.get()
+    archivo = open(nombre+'.json','w')
     print("Archivo creado")
     archivo.close()
+    mensajenuevo.pack_forget()
+    nombrearchivo.pack_forget()
+    campo1.pack_forget()
+    botoncrear.pack_forget()
+    mensajecreado.pack(padx=10,pady=10)
+    botonvolver.pack(padx=10,pady=10)
+
+def volver():
+    print("Vuelta")
+    mensajecreado.pack_forget()
+    botonvolver.pack_forget()
+    mensajeinicio.pack(padx=25,pady=25)
+    desplegable.pack(padx=25,pady=25)
+    botonsalir.pack(padx=25,pady=25)
 
 def salir():
     raiz.destroy()
@@ -23,8 +39,6 @@ def archivoNuevo():
     mensajenuevo.pack(padx=25,pady=25)
     nombrearchivo.pack(padx=10,pady=10)
     campo1.pack(padx=10,pady=10)
-    formatoarchivo.pack(padx=10,pady=10)
-    campo2.pack(padx=10,pady=10)
     botoncrear.pack(padx=10,pady=10)
     
     
@@ -43,15 +57,17 @@ mensajeinicio.pack(padx=25,pady=25)
 
 mensajenuevo = ttk.Label(raiz,text="NUEVO ARCHIVO")
 nombrearchivo = ttk.Label(raiz,text="Nombre")
-formatoarchivo = ttk.Label(raiz,text="Formato")
+mensajecreado = ttk.Label(raiz,text="Archivo creado")
+#formatoarchivo = ttk.Label(raiz,text="Formato")
 
 campo1 = ttk.Entry(raiz)
-campo2 = ttk.Entry(raiz)
+#campo2 = ttk.Entry(raiz)
 
 desplegable = ttk.Combobox(raiz,values=['Nuevo archivo','Abrir archivo existente'])
 desplegable.pack(padx=25,pady=25)
 
 botoncrear = ttk.Button(raiz,text="Crear",command=crear)
+botonvolver = ttk.Button(raiz,text="Volver",command=volver)
 
 botonsalir = ttk.Button(raiz,text="Salir",command=salir)
 botonsalir.pack(padx=25,pady=25)
