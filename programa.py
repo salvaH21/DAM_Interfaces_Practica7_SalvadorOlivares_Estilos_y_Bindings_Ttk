@@ -12,6 +12,18 @@ import os
 
 listaarchivos = []
 
+def listadodearchivos():
+    listaarchivos = []
+    listado.delete(0,tk.END)
+    carpeta = 'C:\\Users\\salva\\Documents\\GitHub2\\archivos_ttk'
+    with os.scandir(carpeta) as ficheros:
+        for fichero in ficheros:
+            if fichero.name.endswith('.json') and fichero.is_file():
+                listaarchivos.append(fichero.name)
+        print(listaarchivos)
+        for archivo in listaarchivos:
+            listado.insert(tk.END,archivo)    
+
 def crear():
     nombre = campo1.get()
     archivo = open(nombre+'.json','w')
@@ -51,18 +63,20 @@ def archivoExistente():
     mensajeinicio.pack_forget()
     desplegable.pack_forget()
     botonsalir.pack_forget()
-    carpeta = 'C:\\Users\\salva\\Documents\\GitHub2\\archivos_ttk'
-    with os.scandir(carpeta) as ficheros:
-        for fichero in ficheros:
-            if fichero.name.endswith('.json') and fichero.is_file():
-                listaarchivos.append(fichero.name)
-        print(listaarchivos)
-        for archivo in listaarchivos:
-            listado.insert(tk.END,archivo)
+    listadodearchivos()
     mensajeexistente.pack(padx=10,pady=10)
     listado.pack(padx=10,pady=10)
-    botonvolver.pack(padx=10,pady=10)
     
+    botonvolver.pack(padx=10,pady=10)
+
+def leerArchivo(evento):
+    seleccionado = listado.curselection()
+    elemento = listado.get(seleccionado)
+    print(elemento)
+    archivo = open(elemento,'r')
+    print(archivo.read())
+    archivo.close()
+
 def opcion(evento):
     print(evento)
     if desplegable.get() == "Nuevo archivo":
@@ -98,7 +112,7 @@ botonsalir.pack(padx=25,pady=25)
 
 listado = tk.Listbox(raiz)
 
-
+listado.bind('<ButtonRelease-1>',leerArchivo)
 desplegable.bind('<<ComboboxSelected>>',opcion)
 
 raiz.geometry("400x400")
