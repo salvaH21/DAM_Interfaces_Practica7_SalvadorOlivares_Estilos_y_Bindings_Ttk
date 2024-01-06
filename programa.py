@@ -12,9 +12,9 @@ import os
 
 listaarchivos = []
 
-def listadodearchivos():
+def listadodearchivosleer():
     listaarchivos = []
-    listado.delete(0,tk.END)
+    listadoleer.delete(0,tk.END)
     carpeta = 'C:\\Users\\salva\\Documents\\GitHub2\\archivos_ttk'
     with os.scandir(carpeta) as ficheros:
         for fichero in ficheros:
@@ -22,7 +22,19 @@ def listadodearchivos():
                 listaarchivos.append(fichero.name)
         print(listaarchivos)
         for archivo in listaarchivos:
-            listado.insert(tk.END,archivo)    
+            listadoleer.insert(tk.END,archivo)    
+
+def listadodearchivosescribir():
+    listaarchivos = []
+    listadoescribir.delete(0,tk.END)
+    carpeta = 'C:\\Users\\salva\\Documents\\GitHub2\\archivos_ttk'
+    with os.scandir(carpeta) as ficheros:
+        for fichero in ficheros:
+            if fichero.name.endswith('.json') and fichero.is_file():
+                listaarchivos.append(fichero.name)
+        print(listaarchivos)
+        for archivo in listaarchivos:
+            listadoescribir.insert(tk.END,archivo) 
 
 def crear():
     nombre = campo1.get()
@@ -34,15 +46,63 @@ def crear():
     nombrearchivo.pack_forget()
     campo1.pack_forget()
     botoncrear.pack_forget()
+    botonvolver.pack_forget()
     mensajecreado.pack(padx=10,pady=10)
+    botonvolver.pack(padx=10,pady=10)
+
+def aceptar():
+    seleccionado = listadoescribir.curselection()
+    elemento = listadoescribir.get(seleccionado)
+    nombre = campo1.get()
+    apellidos = campo2.get()
+    edad = campo3.get()
+    ciudad = campo4.get()
+    print(elemento)
+    print(nombre,apellidos,edad,ciudad)
+    cadena = {'nombre':nombre,'apellidos':apellidos,'edad':edad,'ciudad':ciudad}
+    cadena_json = json.dumps(cadena,indent=1)
+
+    archivo = open(elemento,'a')
+    archivo.write(cadena_json + '\n')
+    archivo.close()
+
+    campo1.delete(0,tk.END)
+    campo2.delete(0,tk.END)
+    campo3.delete(0,tk.END)
+    campo4.delete(0,tk.END)
+    nombrecontacto.pack_forget()
+    campo1.pack_forget()
+    apellidoscontacto.pack_forget()
+    campo2.pack_forget()
+    edadcontacto.pack_forget()
+    campo3.pack_forget()
+    ciudadcontacto.pack_forget()
+    campo4.pack_forget()
+    botonaceptar.pack_forget()
+    botonvolver.pack_forget()
+    contactocreado.pack(padx=10,pady=10)
     botonvolver.pack(padx=10,pady=10)
 
 def volver():
     print("Vuelta")
     mensajecreado.pack_forget()
+    mensajenuevo.pack_forget()
     mensajeexistente.pack_forget()
+    contactocreado.pack_forget()
+    nombrearchivo.pack_forget()
+    campo1.pack_forget()
+    nombrecontacto.pack_forget()
+    apellidoscontacto.pack_forget()
+    campo2.pack_forget()
+    edadcontacto.pack_forget()
+    campo3.pack_forget()
+    ciudadcontacto.pack_forget()
+    campo4.pack_forget()
+    botoncrear.pack_forget()
+    listadoleer.pack_forget()
+    listadoescribir.pack_forget()
+    botonaceptar.pack_forget()
     botonvolver.pack_forget()
-    listado.pack_forget()
     mensajeinicio.pack(padx=25,pady=25)
     desplegable.pack(padx=25,pady=25)
     botonsalir.pack(padx=25,pady=25)
@@ -58,31 +118,61 @@ def archivoNuevo():
     nombrearchivo.pack(padx=10,pady=10)
     campo1.pack(padx=10,pady=10)
     botoncrear.pack(padx=10,pady=10)
+    botonvolver.pack(padx=10,pady=10)
 
 def archivoExistente():
     mensajeinicio.pack_forget()
     desplegable.pack_forget()
     botonsalir.pack_forget()
-    listadodearchivos()
+    listadodearchivosleer()
     mensajeexistente.pack(padx=10,pady=10)
-    listado.pack(padx=10,pady=10)
-    
+    listadoleer.pack(padx=10,pady=10)
     botonvolver.pack(padx=10,pady=10)
 
 def leerArchivo(evento):
-    seleccionado = listado.curselection()
-    elemento = listado.get(seleccionado)
+    seleccionado = listadoleer.curselection()
+    elemento = listadoleer.get(seleccionado)
     print(elemento)
     archivo = open(elemento,'r')
     print(archivo.read())
     archivo.close()
 
+def escribirEnArchivo():
+    print("Escribir")
+    mensajeinicio.pack_forget()
+    desplegable.pack_forget()
+    botonsalir.pack_forget()
+    listadodearchivosescribir()
+    mensajeexistente.pack(padx=10,pady=10)
+    listadoescribir.pack(padx=10,pady=10)
+    botonvolver.pack(padx=10,pady=10)
+
+def nuevoContacto(evento):
+    seleccionado = listadoescribir.curselection()
+    elemento = listadoescribir.get(seleccionado)
+    print(elemento)
+    mensajeexistente.pack_forget()
+    listadoescribir.pack_forget()
+    botonvolver.pack_forget()
+    nombrecontacto.pack(padx=10,pady=10)
+    campo1.pack(padx=10,pady=10)
+    apellidoscontacto.pack(padx=10,pady=10)
+    campo2.pack(padx=10,pady=10)
+    edadcontacto.pack(padx=10,pady=10)
+    campo3.pack(padx=10,pady=10)
+    ciudadcontacto.pack(padx=10,pady=10)
+    campo4.pack(padx=10,pady=10)
+    botonaceptar.pack(padx=10,pady=10)
+    botonvolver.pack(padx=10,pady=10)
+
+
 def opcion(evento):
-    print(evento)
     if desplegable.get() == "Nuevo archivo":
         archivoNuevo()
     elif desplegable.get() == "Abrir archivo existente":
         archivoExistente()
+    elif desplegable.get() == "Escribir en archivo":
+        escribirEnArchivo()
 
 raiz = tk.Tk()
 
@@ -92,16 +182,24 @@ mensajeinicio.pack(padx=25,pady=25)
 mensajenuevo = ttk.Label(raiz,text="NUEVO ARCHIVO")
 nombrearchivo = ttk.Label(raiz,text="Nombre")
 mensajecreado = ttk.Label(raiz,text="Archivo creado")
+contactocreado = ttk.Label(raiz,text="Contacto añadido")
 mensajeexistente = ttk.Label(raiz,text="Selecciona un archivo:")
+nombrecontacto = ttk.Label(raiz,text="Nombre")
+apellidoscontacto = ttk.Label(raiz,text="Apellidos")
+edadcontacto = ttk.Label(raiz,text="Edad")
+ciudadcontacto = ttk.Label(raiz,text="Ciudad")
 #formatoarchivo = ttk.Label(raiz,text="Formato")
 
 campo1 = ttk.Entry(raiz)
-#campo2 = ttk.Entry(raiz)
+campo2 = ttk.Entry(raiz)
+campo3 = ttk.Entry(raiz)
+campo4 = ttk.Entry(raiz)
 
-desplegable = ttk.Combobox(raiz,values=['Nuevo archivo','Abrir archivo existente'])
+desplegable = ttk.Combobox(raiz,values=['Nuevo archivo','Abrir archivo existente','Escribir en archivo'])
 desplegable.pack(padx=25,pady=25)
 
 botoncrear = ttk.Button(raiz,text="Crear",command=crear)
+botonaceptar = ttk.Button(raiz,text="Aceptar",command=aceptar)
 botonvolver = ttk.Button(raiz,text="Volver",command=volver)
 
 ##botonprueba = ttk.Button(raiz,text="Prueba",command=pulsar)
@@ -110,10 +208,12 @@ botonvolver = ttk.Button(raiz,text="Volver",command=volver)
 botonsalir = ttk.Button(raiz,text="Salir",command=salir)
 botonsalir.pack(padx=25,pady=25)
 
-listado = tk.Listbox(raiz)
+listadoleer = tk.Listbox(raiz)
+listadoescribir = tk.Listbox(raiz)
 
-listado.bind('<ButtonRelease-1>',leerArchivo)
+listadoleer.bind('<ButtonRelease-1>',leerArchivo)
+listadoescribir.bind('<ButtonRelease-1>',nuevoContacto)
 desplegable.bind('<<ComboboxSelected>>',opcion)
 
-raiz.geometry("400x400")
+raiz.geometry("400x450")
 raiz.mainloop()
