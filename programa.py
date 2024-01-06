@@ -1,10 +1,3 @@
-##PRACTICA 7 INTERFACES:
-##Realiza una práctica libre en la cual demuestres la aplicación de estilos a uno o varios widgets Ttk,
-##y demuestres la lectura y escritura de propiedades y los bindings con respecto a los widgets
-##(propongo ejercicio de guardar datos en agenda)
-##"Tenéis la capacidad de hacer programas tal que: metas información en campos
-##(como por ejemplo una agenda,lo podríais hacer ya, que pongas campos de nombre,
-## correo electrónico,teléfono, y que le des a guardar, y que se guarde en un txt)"
 import tkinter as tk
 from tkinter import ttk
 import json
@@ -175,20 +168,18 @@ def opcion(evento):
         escribirEnArchivo()
 
 raiz = tk.Tk()
-
-mensajeinicio = ttk.Label(raiz,text="Escoge un opción")
+#ELEMENTOS
+mensajeinicio = ttk.Label(raiz,text="Escoge una opción",font=('Arial',12,'bold'))
 mensajeinicio.pack(padx=25,pady=25)
-
-mensajenuevo = ttk.Label(raiz,text="NUEVO ARCHIVO")
-nombrearchivo = ttk.Label(raiz,text="Nombre")
-mensajecreado = ttk.Label(raiz,text="Archivo creado")
-contactocreado = ttk.Label(raiz,text="Contacto añadido")
-mensajeexistente = ttk.Label(raiz,text="Selecciona un archivo:")
-nombrecontacto = ttk.Label(raiz,text="Nombre")
-apellidoscontacto = ttk.Label(raiz,text="Apellidos")
-edadcontacto = ttk.Label(raiz,text="Edad")
-ciudadcontacto = ttk.Label(raiz,text="Ciudad")
-#formatoarchivo = ttk.Label(raiz,text="Formato")
+mensajenuevo = ttk.Label(raiz,text="NUEVO ARCHIVO",font=('Arial',12,'bold'))
+nombrearchivo = ttk.Label(raiz,text="Nombre",style='azul.TLabel')
+mensajecreado = ttk.Label(raiz,text="Archivo creado",style='verde.TLabel')
+contactocreado = ttk.Label(raiz,text="Contacto añadido",style='verde.TLabel')
+mensajeexistente = ttk.Label(raiz,text="Selecciona un archivo:",font=('Arial',12,'bold'))
+nombrecontacto = ttk.Label(raiz,text="Nombre",style='azul.TLabel')
+apellidoscontacto = ttk.Label(raiz,text="Apellidos",style='azul.TLabel')
+edadcontacto = ttk.Label(raiz,text="Edad",style='azul.TLabel')
+ciudadcontacto = ttk.Label(raiz,text="Ciudad",style='azul.TLabel')
 
 campo1 = ttk.Entry(raiz)
 campo2 = ttk.Entry(raiz)
@@ -198,22 +189,31 @@ campo4 = ttk.Entry(raiz)
 desplegable = ttk.Combobox(raiz,values=['Nuevo archivo','Abrir archivo existente','Escribir en archivo'])
 desplegable.pack(padx=25,pady=25)
 
-botoncrear = ttk.Button(raiz,text="Crear",command=crear)
-botonaceptar = ttk.Button(raiz,text="Aceptar",command=aceptar)
-botonvolver = ttk.Button(raiz,text="Volver",command=volver)
-
-##botonprueba = ttk.Button(raiz,text="Prueba",command=pulsar)
-##botonprueba.pack(padx=25,pady=25)
-
-botonsalir = ttk.Button(raiz,text="Salir",command=salir)
+botoncrear = ttk.Button(raiz,text="Crear",style='verde.TButton',command=crear)
+botonaceptar = ttk.Button(raiz,text="Aceptar",style='verde.TButton',command=aceptar)
+botonvolver = ttk.Button(raiz,text="Volver",style='azul.TButton',command=volver)
+botonsalir = ttk.Button(raiz,text="Salir",style='rojo.TButton',command=salir)
 botonsalir.pack(padx=25,pady=25)
 
 listadoleer = tk.Listbox(raiz)
 listadoescribir = tk.Listbox(raiz)
 
+#BINDINGS
 listadoleer.bind('<ButtonRelease-1>',leerArchivo)
 listadoescribir.bind('<ButtonRelease-1>',nuevoContacto)
 desplegable.bind('<<ComboboxSelected>>',opcion)
+
+#ESTILOS
+estiloRojo = ttk.Style()
+estiloRojo.configure('rojo.TButton',foreground='red')
+estiloVerde = ttk.Style()
+estiloVerde.configure('verde.TButton',foreground='green')
+estiloAzul = ttk.Style()
+estiloAzul.configure('azul.TButton',foreground='blue')
+estiloLabelVerde = ttk.Style()
+estiloLabelVerde.configure('verde.TLabel',foreground='green',background='yellow',font=('Verdana',12,'bold'))
+estiloLabelAzul = ttk.Style()
+estiloLabelAzul.configure('azul.TLabel',foreground='blue',font=('Comic Sans MS',10,'bold'))
 
 raiz.geometry("400x450")
 raiz.mainloop()
